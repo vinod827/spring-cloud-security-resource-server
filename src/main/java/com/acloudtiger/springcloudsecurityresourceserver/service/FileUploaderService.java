@@ -27,40 +27,7 @@ public class FileUploaderService implements FileUploader {
 
     @Override
     public void uploadFile(MultipartFile file) throws IOException {
-
-        /*String clientRegion = "*** Client region ***";
-        String bucketName = "acloudtiger-bucket";
-        String stringObjKeyName = "*** String object key name ***";
-        String fileObjKeyName = "*** File object key name ***";
-        String fileName = "*** Path to file to upload ***";
-
-        try {
-            AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                    .withRegion(clientRegion)
-                    .withCredentials(new ProfileCredentialsProvider())
-                    .build();
-
-            // Upload a text string as a new object.
-            s3Client.putObject(bucketName, stringObjKeyName, "Uploaded String Object");
-
-            // Upload a file as a new object with ContentType and title specified.
-            PutObjectRequest request = new PutObjectRequest(bucketName, fileObjKeyName, new File(fileName));
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType("plain/text");
-            metadata.addUserMetadata("x-amz-meta-title", "someTitle");
-            request.setMetadata(metadata);
-            s3Client.putObject(request);
-        }
-        catch(AmazonServiceException e) {
-            // The call was transmitted successfully, but Amazon S3 couldn't process
-            // it, so it returned an error response.
-            e.printStackTrace();
-        }
-        catch(SdkClientException e) {
-            // Amazon S3 couldn't be contacted for a response, or the client
-            // couldn't parse the response from Amazon S3.
-            e.printStackTrace();
-        }*/
+        logger.info("Entering uploadFile@FileUploaderService");
 
         AWSCredentials credentials = new BasicAWSCredentials(
                 "AKIAI6SK6NOQ6CPUB3CQ",
@@ -77,7 +44,6 @@ public class FileUploaderService implements FileUploader {
         if(s3client.doesBucketExist(bucketName)) {
             logger.info("Bucket name is not available."
                     + " Try again with a different Bucket name.");
-            //return;
         }else{
             s3client.createBucket(bucketName);
         }
@@ -87,22 +53,34 @@ public class FileUploaderService implements FileUploader {
             System.out.println(bucket.getName());
         }
 
-
-/*        File concertFile = new File("C:\\vinod\\projects\\my-hacks\\file\\"+file.getOriginalFilename());
-        concertFile.createNewFile();
-        FileOutputStream fileOutputStream = new FileOutputStream(concertFile);
-        fileOutputStream.write(file.getBytes());
-        fileOutputStream.close();*/
+        File newFile = multipartToFile(file);
 
         s3client.putObject(
                 bucketName,
-                "Document/"+file.getOriginalFilename(),
-                new File(String.valueOf(file.getBytes()))
-        );
+                file.getOriginalFilename(),
+                newFile);
 
         ObjectListing objectListing = s3client.listObjects(bucketName);
         for(S3ObjectSummary os : objectListing.getObjectSummaries()) {
             logger.info(os.getKey());
         }
+        logger.info("Exiting uploadFile@FileUploaderService");
+    }
+
+    /**
+     *
+     * @param multipartFile
+     * @return
+     * @throws IOException
+     */
+    private File multipartToFile(MultipartFile multipartFile) throws IOException {
+        logger.info("Entering multipartToFile@FileUploaderService");
+        File convFile = new File(multipartFile.getOriginalFilename());
+        convFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(multipartFile.getBytes());
+        fos.close();
+        logger.info("Exiting multipartToFile@FileUploaderService");
+        return convFile;
     }
 }

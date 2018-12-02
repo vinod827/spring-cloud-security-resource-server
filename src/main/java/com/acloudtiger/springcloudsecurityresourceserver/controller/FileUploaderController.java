@@ -25,7 +25,7 @@ public class FileUploaderController {
     }
 
 /*    @PostMapping(name = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> uploadFile(@RequestParam("file")MultipartFile file) throws IOException {
+    public ResponseEntity<Object> uploadFileToDirectory(@RequestParam("file") MultipartFile file) throws IOException {
         File concertFile = new File("C:\\vinod\\projects\\my-hacks\\file\\"+file.getOriginalFilename());
         concertFile.createNewFile();
         FileOutputStream fileOutputStream = new FileOutputStream(concertFile);
@@ -35,7 +35,7 @@ public class FileUploaderController {
     }*/
 
     @PostMapping(name = "/s3/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> uploadFileToS3(@RequestParam("file")MultipartFile file) {
+    public ResponseEntity<Object> uploadFileToS3(@RequestParam("file") MultipartFile file) {
         try {
             fileUploader.uploadFile(file);
         } catch (IOException e) {

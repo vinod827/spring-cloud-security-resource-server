@@ -46,7 +46,7 @@ public class FileUploaderController {
         return new ResponseEntity<>("This file has been uploaded successfully", HttpStatus.OK);
     }*/
 
-    @PostMapping(name = "/upload/cloud", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(name = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> uploadFileToS3(@RequestParam("file") MultipartFile file) {
         try {
             fileUploader.uploadFile(file);

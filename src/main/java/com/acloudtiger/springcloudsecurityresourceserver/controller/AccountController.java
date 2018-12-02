@@ -1,6 +1,10 @@
 package com.acloudtiger.springcloudsecurityresourceserver.controller;
 
 import com.acloudtiger.springcloudsecurityresourceserver.model.Account;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,11 +13,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@Api(value="/accounts",description="Account details",produces ="application/json")
+@RequestMapping("/account")
 public class AccountController {
 
     Map<Integer, Account> accountMap = new HashMap<>();
 
-    @RequestMapping("/accounts")
+    @ApiOperation(value="get account details",response=Account.class)
+    @ApiResponses(value={
+            @ApiResponse(code=200,message="Account Details Retrieved",response=Account.class),
+            @ApiResponse(code=500,message="Internal Server Error"),
+            @ApiResponse(code=404,message="Account not found")
+    })
+
+    @RequestMapping("/getDetails")
     public Collection<Account> getAllAccountDetails(){
 
         if(accountMap.isEmpty()){

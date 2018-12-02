@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@Api(value="/accounts",description="Account details",produces ="application/json")
-@RequestMapping("/account")
 public class AccountController {
 
     Map<Integer, Account> accountMap = new HashMap<>();
@@ -26,7 +24,7 @@ public class AccountController {
             @ApiResponse(code=404,message="Account not found")
     })
 
-    @RequestMapping("/getDetails")
+    @RequestMapping("/accounts")
     public Collection<Account> getAllAccountDetails(){
 
         if(accountMap.isEmpty()){

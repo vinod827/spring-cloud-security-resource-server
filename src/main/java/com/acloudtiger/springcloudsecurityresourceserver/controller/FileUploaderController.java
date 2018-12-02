@@ -20,7 +20,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 @RestController
-@Api(value="/upload",description="File upload",produces ="application/json")
 public class FileUploaderController {
 
     private FileUploader fileUploader;

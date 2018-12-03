@@ -1,5 +1,7 @@
 package com.acloudtiger.springcloudsecurityresourceserver.controller;
 
+import com.acloudtiger.springcloudsecurityresourceserver.model.Account;
+import com.acloudtiger.springcloudsecurityresourceserver.model.FileModel;
 import com.acloudtiger.springcloudsecurityresourceserver.service.FileUploader;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class FileUploaderController {
@@ -33,12 +38,12 @@ public class FileUploaderController {
     @ApiResponses(value={
             @ApiResponse(code=200,message="Uploaded file to cloud",response=Object.class),
             @ApiResponse(code=500,message="Internal Server Error"),
-            @ApiResponse(code=404,message="File not uploaded")
+            @ApiResponse(code=404,message="FileModel not uploaded")
     })
 
 /*    @PostMapping(name = "/directory", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> uploadFileToDirectory(@RequestParam("file") MultipartFile file) throws IOException {
-        File concertFile = new File("C:\\vinod\\projects\\my-hacks\\file\\"+file.getOriginalFilename());
+        FileModel concertFile = new FileModel("C:\\vinod\\projects\\my-hacks\\file\\"+file.getOriginalFilename());
         concertFile.createNewFile();
         FileOutputStream fileOutputStream = new FileOutputStream(concertFile);
         fileOutputStream.write(file.getBytes());
@@ -55,6 +60,17 @@ public class FileUploaderController {
             return new ResponseEntity<>("Exception thrown", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>("The file has been uploaded successfully", HttpStatus.OK);
+    }
+
+
+    @RequestMapping("/uploadeddetails")
+    public Collection<FileModel> getAllUploadedFileDetails(){
+        try {
+           return fileUploader.uploadedFileDetails();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

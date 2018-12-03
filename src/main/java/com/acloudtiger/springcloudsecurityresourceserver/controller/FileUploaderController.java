@@ -63,7 +63,7 @@ public class FileUploaderController {
     }
 
 
-    @RequestMapping("/uploadeddetails")
+    @RequestMapping("/uploadedfiles")
     public Collection<FileModel> getAllUploadedFileDetails(){
         try {
            return fileUploader.uploadedFileDetails();

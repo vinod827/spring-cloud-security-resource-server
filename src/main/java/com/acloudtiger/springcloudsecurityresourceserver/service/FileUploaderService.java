@@ -35,8 +35,8 @@ public class FileUploaderService implements FileUploader {
 
     public FileUploaderService() {
         AWSCredentials credentials = new BasicAWSCredentials(
-                "AKIAIKQAS6ZLQRLVAB6A",
-                "lfnCWnZ10hvvnkrEwkEpoa3u+qIKukmhNwFszvKI"
+                "",
+                ""
         );
         s3client = AmazonS3ClientBuilder
                 .standard()
